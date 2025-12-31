@@ -7,7 +7,6 @@ abstract class Person
     protected string $nationality;
     protected $db;
 
-
     public function __construct()
     {
         $this->db = Database::getInstance()->getConnection();
