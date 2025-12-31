@@ -32,6 +32,7 @@ CREATE TABLE contracts(
     FOREIGN KEY (team_id) REFERENCES teams(id)
 );
 
+
 CREATE TABLE transfers(
     id INT PRIMARY KEY AUTO_INCREMENT,
     player_id INT,
