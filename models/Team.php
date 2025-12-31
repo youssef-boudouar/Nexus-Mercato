@@ -51,5 +51,4 @@ class Team
         $this->manager = $manager;
     }
 
-
 }
