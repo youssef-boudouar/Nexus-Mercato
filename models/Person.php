@@ -42,4 +42,5 @@ abstract class Person
         $this->nationality = $nationality;
     }
 
+    abstract public function getAnnualCost();
 }

@@ -1,6 +1,6 @@
 <?php
 
-class Coach extends Person 
+class Coach extends Person
 {
 
     public function getAll()
@@ -24,7 +24,7 @@ class Coach extends Person
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$this->name, $this->nationality, $this->id]);
     }
-    
+
     public function findById($id)
     {
         $sql = "SELECT * FROM coaches WHERE id = ?";
@@ -40,4 +40,8 @@ class Coach extends Person
         return $stmt->execute([$this->id]);
     }
 
+    public function getAnnualCost()
+    {
+        return 5000;
+    }
 }
