@@ -78,5 +78,52 @@ class Transfer
     {
         $this->amount = $amount;
     }
-    
+
+    public function getAll()
+    {
+        $sql = "SELECT players.name AS player, teamA.name AS departure_team, teamB.name AS arrival_team, transfer_status, amount, transfers.id
+                FROM transfers 
+                JOIN players ON transfers.player_id = players.id
+                JOIN teams AS teamA ON transfers.departure_team_id = teamA.id
+                JOIN teams AS teamB ON transfers.arrival_team_id = teamB.id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create()
+    {
+        $sql = "INSERT INTO transfers(player_id, departure_team_id, arrival_team_id, transfer_status, amount) VALUES (?,?,?,?,?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->player_id, $this->departure_team_id, $this->arrival_team_id, $this->transfer_status, $this->amount]);
+    }
+
+    public function findById($id)
+    {
+        $sql = "SELECT * FROM transfers WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return  $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function getByPlayer($player_id)
+    {
+        $sql = "SELECT * FROM transfers WHERE player_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$player_id]);
+        return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getByArrivalTeam($arrival_team_id)
+    {
+        $sql = "SELECT * FROM transfers WHERE arrival_team_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$arrival_team_id]);
+        return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getByDepartureTeam($departure_team_id)
+    {
+        $sql = "SELECT * FROM transfers WHERE departure_team_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$departure_team_id]);
+        return  $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
