@@ -34,5 +34,33 @@ class Player extends Person
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function create()
+    {
+        $sql = "INSERT INTO players(name, nationality, position, market_value) VALUES(?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->name, $this->nationality, $this->position, $this->market_value]);
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE players SET name = ?, nationality = ?, position = ?, market_value = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->name, $this->nationality, $this->position, $this->market_value, $this->id]);
+    }
     
+    public function findById($id)
+    {
+        $sql = "SELECT * FROM players WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function delete()
+    {
+        $sql = "DELETE FROM players WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->id]);
+    }
 }
