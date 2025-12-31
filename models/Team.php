@@ -51,4 +51,44 @@ class Team
         $this->manager = $manager;
     }
 
+    // CRUD
+
+
+    public function getAll()
+    {
+        $sql = "SELECT * FROM teams";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create()
+    {
+        $sql = "INSERT INTO teams(name, budget, manager) VALUES(?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->name, $this->budget, $this->manager]);
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE teams SET name = ?, budget = ?, manager = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->name, $this->budget, $this->manager, $this->id]);
+    }
+    
+    public function findById($id)
+    {
+        $sql = "SELECT * FROM teams WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function delete()
+    {
+        $sql = "DELETE FROM teams WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->id]);
+    }
+
 }
