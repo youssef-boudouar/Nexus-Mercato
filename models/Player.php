@@ -48,7 +48,7 @@ class Player extends Person
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$this->name, $this->nationality, $this->position, $this->market_value, $this->id]);
     }
-    
+
     public function findById($id)
     {
         $sql = "SELECT * FROM players WHERE id = ?";
@@ -62,5 +62,10 @@ class Player extends Person
         $sql = "DELETE FROM players WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$this->id]);
+    }
+
+    public function getAnnualCost()
+    {
+        return $this->market_value * 0.2;
     }
 }
