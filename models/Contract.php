@@ -11,6 +11,7 @@ class Contract
     private $end_date;
     private $db;
 
+    
     public function __construct()
     {
         $this->db = Database::getInstance()->getConnection();
