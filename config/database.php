@@ -20,10 +20,13 @@ class Database {
         );
 
     }
-    public function getConnection(){
+
+    public function getConnection()
+    {
         return $this->connection;
     }
-    public static function getInstance(){
+    public static function getInstance()
+    {
         if(self::$instance === null)
         {
             self::$instance = new Database();
