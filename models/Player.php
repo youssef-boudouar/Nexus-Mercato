@@ -34,4 +34,5 @@ class Player extends Person
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
