@@ -6,7 +6,7 @@ class Database {
     public $host = "localhost";
     public $db_name = "nexus";
     public $username = "root";
-    public $password = "";
+    public $password = "zippo";
     public static $instance = null;
 
 
