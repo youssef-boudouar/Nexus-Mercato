@@ -84,7 +84,7 @@ include './includes/header.php';
         </div>
     </section>
 
-    <!-- Elite Players & Live Transf -->
+    <!-- Elite Players & Live Trans -->
     <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Elite Players -->
         <div class="glass-dark rounded-2xl p-10">
