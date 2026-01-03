@@ -29,7 +29,7 @@ include './includes/header.php';
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample static row -->
+                    <!-- Sample static ro -->
                     <tr>
                         <td class="font-bold text-gray-500">#001</td>
                         <td class="font-bold text-white text-lg">Player Name</td>
