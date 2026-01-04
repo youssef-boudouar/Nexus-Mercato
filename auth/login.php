@@ -6,6 +6,8 @@ if (isset($_SESSION['user_role'])) {
     exit();
 }
 
+$error = '';
+
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -18,6 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $_SESSION['user_role'] = "journalist";
         header('Location: ../index.php');
         exit();
+    }
+    else {
+        $error = 'Invalid email or password';
     }
 }
 
@@ -50,6 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <p class="text-gray-500 text-xs tracking-widest font-bold">AUTHENTICATE TO ENTER COMMAND CENTER</p>
             </div>
 
+            <!-- TODO: Display error message if login fails -->
+            <?php
+            if (!empty($error)) {
+                echo '<div class="mb-6 p-4 rounded-xl bg-red-500/10 border-2 border-red-500 text-red-400 text-center font-bold">';
+                echo $error;
+                echo '</div>';
+            }
+            ?>
 
             <form class="space-y-6" method="POST" action="">
                 <div>
