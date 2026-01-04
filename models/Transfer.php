@@ -2,7 +2,7 @@
 
 require_once './config/database.php';
 
-class Transfer 
+class Transfer
 {
     private $id;
     private $player_id;
@@ -104,6 +104,34 @@ class Transfer
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
         return  $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function update($id)
+    {
+        $sql = "UPDATE transfers 
+            SET player_id = ?, 
+                departure_team_id = ?, 
+                arrival_team_id = ?, 
+                transfer_status = ?, 
+                amount = ? 
+            WHERE id = ?";
+
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            $this->player_id,
+            $this->departure_team_id,
+            $this->arrival_team_id,
+            $this->transfer_status,
+            $this->amount,
+            $id
+        ]);
+    }
+
+    public function delete($id)
+    {
+        $sql = "DELETE FROM transfers WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$id]);
     }
     public function getByPlayer($player_id)
     {
