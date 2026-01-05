@@ -1,26 +1,41 @@
 <?php
-// =====================================================
-// ADD PLAYER FORM
-// =====================================================
 
-// TODO: Start session
 
-// TODO: Check if user is admin (redirect if not)
+session_start();
 
-// TODO: Include database connection
 
-// TODO: Include Player model
+include '../config/database.php';
+include '../models/Player.php';
 
-// TODO: Initialize error and success variables
 
-// TODO: Handle form submission (if POST request)
-// TODO: Get form data (name, nationality, position, age, market_value)
-// TODO: Validate inputs
-// TODO: Create player using model
-// TODO: If success: redirect to players.php
-// TODO: If error: set error message
+if($_SESSION['user_role'] !== 'admin')
+{
+    header('Location: players.php');
+    exit();
+}
 
-include './includes/header.php';
+
+
+if($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+    $name = $_POST['name'];
+    $nationality = $_POST['nationality'];
+    $position = $_POST['position'];
+    $marketValue = $_POST['market_value'];
+
+    $player = new Player();
+    $player->setName($name);
+    echo "ssss";
+    $player->setNationality($nationality);
+    $player->setPosition($position);
+    $player->setMarketValue($marketValue);
+    $player->create();
+
+    header('Location: players.php');
+    exit();
+
+}
+include "../includes/header.php";
 ?>
 
 <div class="max-w-4xl mx-auto p-10">
@@ -33,39 +48,58 @@ include './includes/header.php';
             </a>
         </div>
 
-        <!-- TODO: Display error message if exists -->
-
         <form method="POST" action="" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Name -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">PLAYER NAME</label>
-                    <input type="text" name="name" class="form-input" placeholder="Cristiano Ronaldo" required>
+                    <input type="text" name="name" class="form-input" placeholder="Lionel Messi" required>
                 </div>
 
                 <!-- Nationality -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">NATIONALITY</label>
-                    <input type="text" name="nationality" class="form-input" placeholder="Portugal" required>
+                    <input type="text" name="nationality" class="form-input" placeholder="Argentine" required>
                 </div>
 
                 <!-- Position -->
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">POSITION</label>
-                    <select name="position" class="form-input" required>
-                        <option value="">Select Position</option>
-                        <option value="Goalkeeper">Goalkeeper</option>
-                        <option value="Defender">Defender</option>
-                        <option value="Midfielder">Midfielder</option>
-                        <option value="Attacker">Attacker</option>
-                    </select>
-                </div>
+                    <div>
+                        <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">POSITION</label>
 
-                <!-- Age -->
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">AGE</label>
-                    <input type="number" name="age" class="form-input" placeholder="25" min="16" max="45" required>
-                </div>
+                        <div class="position-grid">
+                            <label class="position-option">
+                                <input type="radio" name="position" value="Goalkeeper" required>
+                                <span class="position-label">
+                                    <i class="fas fa-hand-paper"></i>
+                                    GOALKEEPER
+                                </span>
+                            </label>
+
+                            <label class="position-option">
+                                <input type="radio" name="position" value="Defender" required>
+                                <span class="position-label">
+                                    <i class="fas fa-shield-alt"></i>
+                                    DEFENDER
+                                </span>
+                            </label>
+
+                            <label class="position-option">
+                                <input type="radio" name="position" value="Midfielder" required>
+                                <span class="position-label">
+                                    <i class="fas fa-running"></i>
+                                    MIDFIELDER
+                                </span>
+                            </label>
+
+                            <label class="position-option">
+                                <input type="radio" name="position" value="Attacker" required>
+                                <span class="position-label">
+                                    <i class="fas fa-futbol"></i>
+                                    ATTACKER
+                                </span>
+                            </label>
+                        </div>
+                    </div>
 
                 <!-- Market Value -->
                 <div class="md:col-span-2">
@@ -82,4 +116,4 @@ include './includes/header.php';
     </section>
 </div>
 
-<?php include './includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
