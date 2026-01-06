@@ -49,6 +49,7 @@ include '../includes/header.php';
                         <td class="font-bold text-[#14b8a6] text-lg">€<?= number_format($c['salary'] / 1000000, 2)?>M</td>
                         <td class="text-gray-500"><?= $c['start_date'] ?></td>
                         <td class="text-gray-500"><?= $c['end_date'] ?></td>
+                        <?php if(isset($_SESSION['user_role']) &&  $_SESSION['user_role'] === 'admin'): ?>
                         <td class="flex gap-4">
                             <!-- EDIT -->
                             <a href="edit_player.php?id=<?= $player['id'] ?>"
@@ -63,6 +64,7 @@ include '../includes/header.php';
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
+                        <?php endif; ?>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
