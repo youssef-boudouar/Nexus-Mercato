@@ -2,7 +2,7 @@
 
 
 // Include header
-include './includes/header.php';
+include '../includes/header.php';
 ?>
 
 <div class="max-w-7xl mx-auto p-10 space-y-8">
@@ -40,10 +40,19 @@ include './includes/header.php';
                             <span class="badge badge-orange">IN PROGRESS</span>
                         </td>
                         <td class="font-bold text-[#FF5722] text-lg">€0</td>
-                        <td>
-                            <button class="text-[#FF5722] hover:text-[#F4511E] transition-colors">
+                        <td class="flex gap-4">
+                            <!-- EDIT -->
+                            <a href="edit_player.php?id=<?= $player['id'] ?>"
+                                class="text-blue-400 hover:text-blue-300 transition">
                                 <i class="fas fa-edit"></i>
-                            </button>
+                            </a>
+
+                            <!-- DELETE -->
+                            <a href="delete_player.php?id=<?= $player['id'] ?>"
+                                onclick="return confirm('Are you sure you want to delete this player?');"
+                                class="text-red-500 hover:text-red-400 transition">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -53,4 +62,4 @@ include './includes/header.php';
 
 </div>
 
-<?php include './includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>
