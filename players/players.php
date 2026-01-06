@@ -43,7 +43,7 @@ include '../includes/header.php';
                             <td class="font-bold text-white text-lg"><?= $p['name'] ?></td>
                             <td class="text-gray-400 tracking-wide"><?= $p['nationality'] ?></td>
                             <td><span class="badge badge-orange"><?= strtoupper($p['position']) ?></span></td>
-                            <td class="font-bold text-[#14b8a6] text-lg">€<?= number_format($p['market_value'], 0) ?></td>
+                            <td class="font-bold text-[#14b8a6] text-lg">€<?= number_format($p['market_value'] / 1000000, 2) ?>M</td>
                             <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                 <td class="flex gap-4">
                                     <a href="edit_player.php?id=<?= $p['id'] ?>" class="text-blue-400 hover:text-blue-300 transition">
