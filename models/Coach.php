@@ -1,5 +1,8 @@
 <?php
 
+require_once 'Person.php';
+require_once '../config/database.php'; 
+
 class Coach extends Person
 {
 
