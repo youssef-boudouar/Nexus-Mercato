@@ -1,7 +1,14 @@
 <?php
 
+session_start();
 
-// Include header
+include '../models/Contract.php';
+
+$contract = new Contract();
+$contracts = $contract->getAll();
+
+var_dump($contracts);
+
 include '../includes/header.php';
 ?>
 
@@ -10,10 +17,12 @@ include '../includes/header.php';
     <section id="contracts" class="glass-dark rounded-xl p-8">
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-4xl font-bold orange-glow tech-header">CONTRACT REGISTRY</h2>
+            <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
             <a href="add_contract.php" class="btn-outline">
                 <i class="fas fa-plus mr-2"></i>
                 ADD CONTRACT
             </a>
+            <?php endif; ?>
         </div>
         
         <div class="overflow-x-auto">
@@ -26,18 +35,20 @@ include '../includes/header.php';
                         <th>SALARY</th>
                         <th>START DATE</th>
                         <th>END DATE</th>
+                        <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <th>ACTIONS</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample static row -->
+                    <?php foreach($contracts as $c): ?>
                     <tr>
-                        <td class="font-bold text-gray-500">#001</td>
-                        <td class="font-bold text-white text-lg">Person Name</td>
-                        <td class="text-gray-400 tracking-wide">Team Name</td>
-                        <td class="font-bold text-[#14b8a6] text-lg">€0</td>
-                        <td class="text-gray-500">2024-01-01</td>
-                        <td class="text-gray-500">2027-01-01</td>
+                        <td class="font-bold text-gray-500">#<?= $c['id'] ?></td>
+                        <td class="font-bold text-white text-lg"><?= $c['player'] ?></td>
+                        <td class="text-gray-400 tracking-wide"><?= $c['team'] ?></td>
+                        <td class="font-bold text-[#14b8a6] text-lg">€<?= number_format($c['salary'] / 1000000, 2)?>M</td>
+                        <td class="text-gray-500"><?= $c['start_date'] ?></td>
+                        <td class="text-gray-500"><?= $c['end_date'] ?></td>
                         <td class="flex gap-4">
                             <!-- EDIT -->
                             <a href="edit_player.php?id=<?= $player['id'] ?>"
@@ -53,6 +64,7 @@ include '../includes/header.php';
                             </a>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
