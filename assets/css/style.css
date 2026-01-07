@@ -71,6 +71,17 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.form-input option {
+    background-color: #1a1a1a; /* Dark background */
+    color: #ffffff; /* White text */
+    padding: 10px;
+}
+
+.form-input option:hover,
+.form-input option:checked {
+    background-color: #ff6b35; /* Orange background when selected */
+    color: #000000; /* Black text when selected */
+}
 
 /* Mobile responsive */
 @media (max-width: 768px) {
