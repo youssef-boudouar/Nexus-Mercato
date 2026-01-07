@@ -7,8 +7,6 @@ include '../models/Contract.php';
 $contract = new Contract();
 $contracts = $contract->getAll();
 
-var_dump($contracts);
-
 include '../includes/header.php';
 ?>
 
@@ -52,13 +50,13 @@ include '../includes/header.php';
                         <?php if(isset($_SESSION['user_role']) &&  $_SESSION['user_role'] === 'admin'): ?>
                         <td class="flex gap-4">
                             <!-- EDIT -->
-                            <a href="edit_player.php?id=<?= $player['id'] ?>"
+                            <a href="edit_contract.php?id=<?= $c['id'] ?>"
                                 class="text-blue-400 hover:text-blue-300 transition">
                                 <i class="fas fa-edit"></i>
                             </a>
 
                             <!-- DELETE -->
-                            <a href="delete_player.php?id=<?= $player['id'] ?>"
+                            <a href="delete_contract.php?id=<?= $c['id'] ?>"
                                 onclick="return confirm('Are you sure you want to delete this player?');"
                                 class="text-red-500 hover:text-red-400 transition">
                                 <i class="fas fa-trash"></i>
