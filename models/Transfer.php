@@ -106,7 +106,7 @@ class Transfer
         return  $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update($id)
+    public function update()
     {
         $sql = "UPDATE transfers 
             SET player_id = ?, 
@@ -123,7 +123,7 @@ class Transfer
             $this->arrival_team_id,
             $this->transfer_status,
             $this->amount,
-            $id
+            $this->id
         ]);
     }
 
