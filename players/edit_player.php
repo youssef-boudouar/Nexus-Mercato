@@ -1,32 +1,54 @@
 <?php
-// =====================================================
-// EDIT PLAYER FORM
-// =====================================================
 
-// TODO: Start session
+session_start();
 
-// TODO: Check if user is admin (redirect if not)
 
-// TODO: Include database connection
+include '../config/database.php';
+include '../models/Player.php';
 
-// TODO: Include Player model
 
-// TODO: Initialize error and success variables
+if ($_SESSION['user_role'] !== 'admin') {
+    header('Location: players.php');
+    exit();
+}
 
-// TODO: Get player ID from URL (?id=X)
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $player = new Player();
 
-// TODO: Validate ID exists
+    $result = $player->findById($id);
+    $name = $result['name'];
+    $nationality = $result['nationality'];
+    $position = $result['position'];
+    $market_value = $result['market_value'];
+    
+} 
+else
+{
+    header('Location: players.php');
+    exit();
+}
 
-// TODO: Fetch player data from database using ID
 
-// TODO: If player not found, redirect to players.php
+if($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $name = $_POST['name'];
+    $nationality = $_POST['nationality'];
+    $position = $_POST['position'];
+    $marketValue = $_POST['market_value'];
 
-// TODO: Handle form submission (if POST request)
-// TODO: Get form data (name, nationality, position, age, market_value)
-// TODO: Validate inputs
-// TODO: Update player using model
-// TODO: If success: redirect to players.php
-// TODO: If error: set error message
+    $player = new Player();
+    $player->setId($id);
+    $player->setName($name);
+    $player->setNationality($nationality);
+    $player->setPosition($position);
+    $player->setMarketValue($marketValue);
+    $player->update();
+
+    header('Location: players.php');
+    exit();
+}
+
 
 include './includes/header.php';
 ?>
@@ -41,49 +63,60 @@ include './includes/header.php';
             </a>
         </div>
 
-        <!-- TODO: Display error message if exists -->
-
         <form method="POST" action="" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Name -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">PLAYER NAME</label>
-                    <!-- TODO: Pre-fill value with existing player name -->
-                    <input type="text" name="name" class="form-input" value="" required>
+                    <input type="text" name="name" class="form-input" value="<?= $name ?>" required>
                 </div>
 
-                <!-- Nationality -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">NATIONALITY</label>
-                    <!-- TODO: Pre-fill value with existing nationality -->
-                    <input type="text" name="nationality" class="form-input" value="" required>
+                    <input type="text" name="nationality" class="form-input" value="<?= $nationality ?>" required>
                 </div>
 
-                <!-- Position -->
+                 
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">POSITION</label>
-                    <!-- TODO: Select current position -->
-                    <select name="position" class="form-input" required>
-                        <option value="">Select Position</option>
-                        <option value="Goalkeeper">Goalkeeper</option>
-                        <option value="Defender">Defender</option>
-                        <option value="Midfielder">Midfielder</option>
-                        <option value="Attacker">Attacker</option>
-                    </select>
+
+                    <div class="position-grid">
+                        <label class="position-option">
+                            <input type="radio" name="position" value="GoalKeeper" required <?= $position === 'GoalKeeper' ? 'checked' : '' ?>>
+                            <span class="position-label">
+                                <i class="fas fa-hand-paper"></i>
+                                GOALKEEPER
+                            </span>
+                        </label>
+
+                        <label class="position-option">
+                            <input type="radio" name="position" value="Defender" required <?= $position === 'Defender' ? 'checked': '' ?>>
+                            <span class="position-label">
+                                <i class="fas fa-shield-alt"></i>
+                                DEFENDER
+                            </span>
+                        </label>
+
+                        <label class="position-option">
+                            <input type="radio" name="position" value="Midfielder" required <?= $position === 'Midfielder' ? 'checked': '' ?>>
+                            <span class="position-label">
+                                <i class="fas fa-running"></i>
+                                MIDFIELDER
+                            </span>
+                        </label>
+
+                        <label class="position-option">
+                            <input type="radio" name="position" value="Attacker" required <?= $position === 'Attacker' ? 'checked': '' ?>>
+                            <span class="position-label">
+                                <i class="fas fa-futbol"></i>
+                                ATTACKER
+                            </span>
+                        </label>
+                    </div>
                 </div>
 
-                <!-- Age -->
-                <div>
-                    <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">AGE</label>
-                    <!-- TODO: Pre-fill value with existing age -->
-                    <input type="number" name="age" class="form-input" value="" min="16" max="45" required>
-                </div>
-
-                <!-- Market Value -->
                 <div class="md:col-span-2">
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">MARKET VALUE (€)</label>
-                    <!-- TODO: Pre-fill value with existing market value -->
-                    <input type="number" name="market_value" class="form-input" value="" min="0" step="1000" required>
+                    <input type="number" name="market_value" class="form-input" value="<?= $market_value ?>" min="0" step="1000" required>
                 </div>
             </div>
 
