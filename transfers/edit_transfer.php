@@ -1,37 +1,58 @@
 <?php
-// =====================================================
-// EDIT TRANSFER FORM
-// =====================================================
 
-// TODO: Start session
+session_start();
 
-// TODO: Check if user is admin (redirect if not)
+include '../config/database.php';
+include '../models/Transfer.php';
+include '../models/Player.php';
+include '../models/Team.php';
 
-// TODO: Include database connection
+if ($_SESSION['user_role'] !== 'admin') {
+    header('Location: transfers.php');
+    exit();
+}
 
-// TODO: Include Transfer, Player, Team models
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $transfer = new Transfer();
 
-// TODO: Initialize error and success variables
+    $result = $transfer->findById($id);
+    $player_id = $result['player_id'];
+    $departure_team_id = $result['departure_team_id'];
+    $arrival_team_id = $result['arrival_team_id'];
+    $amount = $result['amount'];
+    $transfer_status = $result['transfer_status'];
 
-// TODO: Get transfer ID from URL (?id=X)
+    // var_dump($transfer_status);
+    
+    $team = new Team();
+    $teams = $team->getAll();
+} 
+else
+{
+    header('Location: transfers.php');
+    exit();
+}
 
-// TODO: Validate ID exists
+if($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $departure_team_id = $_POST['departure_team_id'];
+    $arrival_team_id = $_POST['arrival_team_id'];
+    $amount = $_POST['amount'];
+    $transfer_status = $_POST['transfer_status'];
 
-// TODO: Fetch transfer data from database using ID
+    $transfer = new Transfer();
+    $transfer->setId($id);
+    $transfer->setPlayerId($player_id);
+    $transfer->setDepartureTeamId($departure_team_id);
+    $transfer->setArrivalTeamId($arrival_team_id);
+    $transfer->setAmount($amount);
+    $transfer->setTransferStatus($transfer_status);
+    $transfer->update();
 
-// TODO: If transfer not found, redirect to transfers.php
-
-// TODO: Fetch all players from database
-
-// TODO: Fetch all teams from database
-
-// TODO: Handle form submission (if POST request)
-// TODO: Get form data (player_id, departure_team_id, arrival_team_id, amount, transfer_status)
-// TODO: Validate inputs
-// TODO: Validate departure and arrival teams are different
-// TODO: Update transfer using model
-// TODO: If success: redirect to transfers.php
-// TODO: If error: set error message
+    header('Location: transfers.php');
+    exit();
+}
 
 include '../includes/header.php';
 ?>
@@ -46,56 +67,51 @@ include '../includes/header.php';
             </a>
         </div>
 
-        <!-- TODO: Display error message if exists -->
-
         <form method="POST" action="" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Player -->
-                <div class="md:col-span-2">
-                    <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">SELECT PLAYER</label>
-                    <!-- TODO: Loop through players and select current player -->
-                    <select name="player_id" class="form-input" required>
-                        <option value="">Select Player</option>
-                        <!-- TODO: Loop and select current -->
-                    </select>
-                </div>
-
-                <!-- Departure Team -->
-                <div>
+                
+                <div> 
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">FROM TEAM</label>
-                    <!-- TODO: Loop through teams and select current departure team -->
-                    <select name="departure_team_id" class="form-input" required>
-                        <option value="">Select Departure Team</option>
-                        <!-- TODO: Loop and select current -->
-                    </select>
+                    <?php if ($transfer_status == 'done'): ?>
+                    
+                        <select name="departure_team_id" class="form-input" required>
+                            <option value="">Select Departure Team</option>
+                            <?php foreach ($teams as $t): ?>
+                                <option value="<?= $t['id'] ?>" <?= $t['id'] == $departure_team_id ? 'selected' : '' ?>><?= $t['name'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    <?php else: ?>
+                        <input type="text" class="form-input bg-gray-800" value="<?php 
+                            foreach ($teams as $t) {
+                                if ($t['id'] == $departure_team_id) echo $t['name'];
+                            }
+                        ?>" disabled>
+                        <input type="hidden" name="departure_team_id" value="<?= $departure_team_id ?>">
+                    <?php endif; ?>
                 </div>
 
-                <!-- Arrival Team -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">TO TEAM</label>
-                    <!-- TODO: Loop through teams and select current arrival team -->
                     <select name="arrival_team_id" class="form-input" required>
                         <option value="">Select Arrival Team</option>
-                        <!-- TODO: Loop and select current -->
+                        <?php foreach ($teams as $t): ?>
+                            <option value="<?= $t['id'] ?>" <?= $t['id'] == $arrival_team_id ? 'selected' : '' ?>><?= $t['name'] ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
 
-                <!-- Transfer Amount -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">TRANSFER AMOUNT (€)</label>
-                    <!-- TODO: Pre-fill with current amount -->
-                    <input type="number" name="amount" class="form-input" value="" min="0" step="1000000" required>
+                    <input type="number" name="amount" class="form-input" value="<?= $amount ?>" min="0" step="1000000" required>
                 </div>
 
-                <!-- Transfer Status -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">TRANSFER STATUS</label>
-                    <!-- TODO: Select current status -->
-                    <select name="transfer_status" class="form-input" required>
+                    <select name="transfer_status" class="form-input" required <?= $transfer_status === 'done' ? 'disabled' : ''?>>
                         <option value="">Select Status</option>
-                        <option value="in progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="in progress" <?= $transfer_status === 'in progress' ? 'selected' : '' ?>>In Progress</option>
+                        <option value="done" <?= $transfer_status === 'done' ? 'selected' : '' ?>>Done</option>
+                        <option value="cancelled" <?= $transfer_status === 'cancelled' ? 'selected' : '' ?>>Cancelled</option>
                     </select>
                 </div>
             </div>
