@@ -1,8 +1,13 @@
 <?php
 
+session_start();
 
-// Include header
-include './includes/header.php';
+include '../models/Contract.php';
+
+$contract = new Contract();
+$contracts = $contract->getAll();
+
+include '../includes/header.php';
 ?>
 
 <div class="max-w-7xl mx-auto p-10 space-y-8">
@@ -10,10 +15,12 @@ include './includes/header.php';
     <section id="contracts" class="glass-dark rounded-xl p-8">
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-4xl font-bold orange-glow tech-header">CONTRACT REGISTRY</h2>
+            <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
             <a href="add_contract.php" class="btn-outline">
                 <i class="fas fa-plus mr-2"></i>
                 ADD CONTRACT
             </a>
+            <?php endif; ?>
         </div>
         
         <div class="overflow-x-auto">
@@ -26,24 +33,38 @@ include './includes/header.php';
                         <th>SALARY</th>
                         <th>START DATE</th>
                         <th>END DATE</th>
+                        <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <th>ACTIONS</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Sample static row -->
+                    <?php foreach($contracts as $c): ?>
                     <tr>
-                        <td class="font-bold text-gray-500">#001</td>
-                        <td class="font-bold text-white text-lg">Person Name</td>
-                        <td class="text-gray-400 tracking-wide">Team Name</td>
-                        <td class="font-bold text-[#14b8a6] text-lg">€0</td>
-                        <td class="text-gray-500">2024-01-01</td>
-                        <td class="text-gray-500">2027-01-01</td>
-                        <td>
-                            <button class="text-[#FF5722] hover:text-[#F4511E] transition-colors">
+                        <td class="font-bold text-gray-500">#<?= $c['id'] ?></td>
+                        <td class="font-bold text-white text-lg"><?= $c['player'] ?></td>
+                        <td class="text-gray-400 tracking-wide"><?= $c['team'] ?></td>
+                        <td class="font-bold text-[#14b8a6] text-lg">€<?= number_format($c['salary'] / 1000000, 2)?>M</td>
+                        <td class="text-gray-500"><?= $c['start_date'] ?></td>
+                        <td class="text-gray-500"><?= $c['end_date'] ?></td>
+                        <?php if(isset($_SESSION['user_role']) &&  $_SESSION['user_role'] === 'admin'): ?>
+                        <td class="flex gap-4">
+                            <!-- EDIT -->
+                            <a href="edit_contract.php?id=<?= $c['id'] ?>"
+                                class="text-blue-400 hover:text-blue-300 transition">
                                 <i class="fas fa-edit"></i>
-                            </button>
+                            </a>
+
+                            <!-- DELETE -->
+                            <a href="delete_contract.php?id=<?= $c['id'] ?>"
+                                onclick="return confirm('Are you sure you want to delete this player?');"
+                                class="text-red-500 hover:text-red-400 transition">
+                                <i class="fas fa-trash"></i>
+                            </a>
                         </td>
+                        <?php endif; ?>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
@@ -51,4 +72,4 @@ include './includes/header.php';
 
 </div>
 
-<?php include './includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

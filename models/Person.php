@@ -1,5 +1,8 @@
 <?php
 
+require_once '../config/database.php'; 
+
+
 abstract class Person
 {
     protected int $id;
