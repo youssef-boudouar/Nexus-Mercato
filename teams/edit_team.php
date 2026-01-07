@@ -1,32 +1,53 @@
 <?php
-// =====================================================
-// EDIT TEAM FORM
-// =====================================================
 
-// TODO: Start session
+session_start();
 
-// TODO: Check if user is admin (redirect if not)
 
-// TODO: Include database connection
+include '../config/database.php';
+include '../models/Team.php';
 
-// TODO: Include Team model
 
-// TODO: Initialize error and success variables
+if ($_SESSION['user_role'] !== 'admin') {
+    header('Location: teams.php');
+    exit();
+}
 
-// TODO: Get team ID from URL (?id=X)
+if(isset($_GET['id']))
+{
+    $id = $_GET['id'];
 
-// TODO: Validate ID exists
+    $team = new Team();
+    $teamData = $team->findById($id);
 
-// TODO: Fetch team data from database using ID
+    $name = $teamData['name'];
+    $budget = $teamData['budget'];
+    $manager = $teamData['manager'];
+   
+}
+else
+{
+    header('Location: teams.php');
+    exit();
+}
 
-// TODO: If team not found, redirect to teams.php
+if($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $name = $_POST['name'];
+    $budget = $_POST['budget'];
+    $manager = $_POST['manager'];
 
-// TODO: Handle form submission (if POST request)
-// TODO: Get form data (name, manager, budget)
-// TODO: Validate inputs
-// TODO: Update team using model
-// TODO: If success: redirect to teams.php
-// TODO: If error: set error message
+    $team = new Team();
+    $team->setId($id);
+    $team->setName($name);
+    $team->setBudget($budget);
+    $team->setManager($manager);
+
+    $team->update();
+
+    header('Location: teams.php');
+    exit();  
+}
+
 
 include '../includes/header.php';
 ?>
