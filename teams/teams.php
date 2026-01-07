@@ -47,7 +47,7 @@ include '../includes/header.php';
                         <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <td class="flex gap-4">
                             <!-- EDIT -->
-                            <a href="edit_team.php?if= <?= $team['id'] ?>"
+                            <a href="edit_team.php?id= <?= $team['id'] ?>"
                                 class="text-blue-400 hover:text-blue-300 transition">
                                 <i class="fas fa-edit"></i>
                             </a>
