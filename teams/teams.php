@@ -43,7 +43,7 @@ include '../includes/header.php';
                         <td class="font-bold text-gray-500">#<?= $team['id'] ?></td>
                         <td class="font-bold text-white text-lg"><?= $team['name'] ?></td>
                         <td class="text-gray-400 tracking-wide"><?= $team['manager'] ?></td>
-                        <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget']) ?></td>
+                        <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000000) ?>M</td>
                         <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <td class="flex gap-4">
                             <!-- EDIT -->
