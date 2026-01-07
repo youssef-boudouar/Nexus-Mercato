@@ -48,7 +48,7 @@ include '../includes/header.php';
                         <td>
                             <span class="badge badge-orange"><?= $transfer['transfer_status'] ?></span>
                         </td>
-                        <td class="font-bold text-[#FF5722] text-lg"><?= $transfer['amount'] == 0 ? "Free Agent" : '€'.number_format($transfer['amount'])?></td>
+                        <td class="font-bold text-[#FF5722] text-lg"><?= $transfer['amount'] == 0 ? "Free Agent" : '€'.number_format($transfer['amount'] / 1000000, 2).'M'?></td>
                         <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <td class="flex gap-4">
                             <!-- EDIT -->
