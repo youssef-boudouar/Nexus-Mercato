@@ -28,7 +28,7 @@
 // TODO: If success: redirect to teams.php
 // TODO: If error: set error message
 
-include './includes/header.php';
+include '../includes/header.php';
 ?>
 
 <div class="max-w-4xl mx-auto p-10">
@@ -75,4 +75,4 @@ include './includes/header.php';
     </section>
 </div>
 
-<?php include './includes/footer.php'; ?>
+<?php include '../includes/footer.php'; ?>

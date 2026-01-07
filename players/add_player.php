@@ -25,7 +25,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 
     $player = new Player();
     $player->setName($name);
-    echo "ssss";
     $player->setNationality($nationality);
     $player->setPosition($position);
     $player->setMarketValue($marketValue);
