@@ -62,29 +62,22 @@ include '../includes/header.php';
             </a>
         </div>
 
-        <!-- TODO: Display error message if exists -->
 
         <form method="POST" action="" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Team Name -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">TEAM NAME</label>
-                    <!-- TODO: Pre-fill value with existing team name -->
-                    <input type="text" name="name" class="form-input" value="" required>
+                    <input type="text" name="name" class="form-input" value="<?= $name ?>" required>
                 </div>
 
-                <!-- Manager -->
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">MANAGER</label>
-                    <!-- TODO: Pre-fill value with existing manager -->
-                    <input type="text" name="manager" class="form-input" value="" required>
+                    <input type="text" name="manager" class="form-input" value="<?= $manager ?>" required>
                 </div>
 
-                <!-- Budget -->
                 <div class="md:col-span-2">
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">BUDGET (€)</label>
-                    <!-- TODO: Pre-fill value with existing budget -->
-                    <input type="number" name="budget" class="form-input" value="" min="0" step="1000000" required>
+                    <input type="number" name="budget" class="form-input" value="<?= $budget ?>" min="0" step="1000000" required>
                 </div>
             </div>
 
