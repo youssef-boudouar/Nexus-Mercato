@@ -1,4 +1,66 @@
 <?php
+
+
+
+session_start();
+
+
+include '../config/database.php';
+include '../models/Team.php';
+
+
+if($_SESSION['user_role'] !== 'admin')
+{
+    header('Location: teams.php');
+    exit();
+}
+
+
+
+if($_SERVER['REQUEST_METHOD'] == 'POST')
+{
+    $name = $_POST['name'];
+    $manager = $_POST['manager'];
+    $budget = $_POST['budget'];
+
+
+    $team = new Team();
+    $team->setName($name);
+    $team->setManager($manager);
+    $team->setBudget($budget);
+    $team->create();
+
+    header('Location: teams.php');
+    exit();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // =====================================================
 // ADD TEAM FORM
 // =====================================================
