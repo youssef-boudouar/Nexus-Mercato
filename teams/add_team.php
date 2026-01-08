@@ -35,53 +35,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// =====================================================
-// ADD TEAM FORM
-// =====================================================
-
-// TODO: Start session
-
-// TODO: Check if user is admin (redirect if not)
-
-// TODO: Include database connection
-
-// TODO: Include Team model
-
-// TODO: Initialize error and success variables
-
-// TODO: Handle form submission (if POST request)
-// TODO: Get form data (name, manager, budget)
-// TODO: Validate inputs
-// TODO: Create team using model
-// TODO: If success: redirect to teams.php
-// TODO: If error: set error message
-
 include '../includes/header.php';
 ?>
 
@@ -94,8 +47,6 @@ include '../includes/header.php';
                 BACK TO TEAMS
             </a>
         </div>
-
-        <!-- TODO: Display error message if exists -->
 
         <form method="POST" action="" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
