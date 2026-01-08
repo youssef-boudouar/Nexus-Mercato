@@ -15,12 +15,6 @@ include '../includes/header.php';
     <section id="contracts" class="glass-dark rounded-xl p-8">
         <div class="flex items-center justify-between mb-8">
             <h2 class="text-4xl font-bold orange-glow tech-header">CONTRACT REGISTRY</h2>
-            <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-            <a href="add_contract.php" class="btn-outline">
-                <i class="fas fa-plus mr-2"></i>
-                ADD CONTRACT
-            </a>
-            <?php endif; ?>
         </div>
         
         <div class="overflow-x-auto">
