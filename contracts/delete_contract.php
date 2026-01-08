@@ -1,24 +1,26 @@
 <?php
-// =====================================================
-// DELETE CONTRACT HANDLER
-// =====================================================
 
-// TODO: Start session
 
-// TODO: Check if user is admin (redirect if not)
+session_start();
 
-// TODO: Include database connection
 
-// TODO: Include Contract model
+include '../config/database.php';
+include '../models/Contract.php';
 
-// TODO: Get contract ID from URL (?id=X)
 
-// TODO: Validate ID exists
+if($_SESSION['user_role'] !== 'admin')
+{
+    header('Location: contracts.php');
+    exit();
+}
+if(isset($_GET['id'])) 
+{
+    $id = $_GET['id'];
 
-// TODO: Delete contract from database using model
+    $contract = new Contract();
+    $contract->setId($id);
+    $contract->delete();
+    header('Location: contracts.php');
+    exit();
+}
 
-// TODO: If success: redirect to contracts.php?deleted=success
-
-// TODO: If error: redirect to contracts.php?deleted=error
-
-?>
