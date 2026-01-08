@@ -1,24 +1,26 @@
 <?php
-// =====================================================
-// DELETE TEAM HANDLER
-// =====================================================
 
-// TODO: Start session
 
-// TODO: Check if user is admin (redirect if not)
+session_start();
 
-// TODO: Include database connection
 
-// TODO: Include Team model
+include '../config/database.php';
+include '../models/Team.php';
 
-// TODO: Get team ID from URL (?id=X)
 
-// TODO: Validate ID exists
+if($_SESSION['user_role'] !== 'admin')
+{
+    header('Location: teams.php');
+    exit();
+}
+if(isset($_GET['id'])) 
+{
+    $id = $_GET['id'];
 
-// TODO: Delete team from database using model
+    $team = new Team();
+    $team->setId($id);
+    $team->delete();
+    header('Location: teams.php');
+    exit();
+}
 
-// TODO: If success: redirect to teams.php?deleted=success
-
-// TODO: If error: redirect to teams.php?deleted=error
-
-?>
