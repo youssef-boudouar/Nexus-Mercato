@@ -1,24 +1,24 @@
 <?php
-// =====================================================
-// DELETE PLAYER HANDLER
-// =====================================================
 
-// TODO: Start session
+session_start();
 
-// TODO: Check if user is admin (redirect if not)
 
-// TODO: Include database connection
+include '../config/database.php';
+include '../models/Player.php';
 
-// TODO: Include Player model
 
-// TODO: Get player ID from URL (?id=X)
+if($_SESSION['user_role'] !== 'admin')
+{
+    header('Location: players.php');
+    exit();
+}
+if(isset($_GET['id'])) 
+{
+    $id = $_GET['id'];
 
-// TODO: Validate ID exists
-
-// TODO: Delete player from database using model
-
-// TODO: If success: redirect to players.php?deleted=success
-
-// TODO: If error: redirect to players.php?deleted=error
-
-?>
+    $player = new Player();
+    $player->setId($id);
+    $player->delete();
+    header('Location: players.php');
+    exit();
+}
