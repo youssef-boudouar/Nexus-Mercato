@@ -27,7 +27,7 @@ include '../includes/header.php';
             <table class="data-table">
                 <thead>
                     <tr class="tech-header">
-                        <th>ID</th>
+                        <th>LOGO</th>
                         <th>TEAM NAME</th>
                         <th>MANAGER</th>
                         <th>BUDGET</th>
@@ -40,10 +40,15 @@ include '../includes/header.php';
                     <!-- Sample static row -->
                      <?php foreach($teams as $team): ?>
                     <tr>
-                        <td class="font-bold text-gray-500">#<?= $team['id'] ?></td>
+                        <td><img src="<?= $team['logo_url'] ?>" alt="" class="team-img"></td>
                         <td class="font-bold text-white text-lg"><?= $team['name'] ?></td>
                         <td class="text-gray-400 tracking-wide"><?= $team['manager'] ?></td>
-                        <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000000) ?>M</td>
+                        <?php if($team['budget'] >= 1000000):?>
+                        <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000000, 2) ?>M</td>
+                        <?php endif?>
+                        <?php if($team['budget'] < 1000000) :?>
+                            <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000, 2)  ?>K</td>
+                        <?php endif?>
                         <?php if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                         <td class="flex gap-4">
                             <!-- EDIT -->
