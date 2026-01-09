@@ -65,6 +65,16 @@ body {
     transition: all 0.3s ease;
 }
 
+.team-img {
+    width: 75px;
+    height: 95px;
+    border-radius: 14px;
+    object-fit: cover;
+    object-position: center 15%;
+    display: block;
+    transition: all 0.3s ease;
+}
+
 /* Enhance table for images */
 .data-table tbody tr {
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.4) 0%, rgba(20, 20, 35, 0.4) 100%);
