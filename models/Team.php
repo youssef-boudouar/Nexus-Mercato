@@ -57,13 +57,7 @@ class Team
     // CRUD
 
 
-    public function getAll()
-    {
-        $sql = "SELECT * FROM teams";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+
 
     public function create()
     {
@@ -93,5 +87,18 @@ class Team
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$this->id]);
     }
-
+    public function getTotalTeams()
+    {
+        $sql = "SELECT count(id) as total FROM teams";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch();
+    }
+    public function gertAllPagination($start, $resultPerPage)
+    {
+        $sql = "SELECT * FROM teams ORDER BY budget DESC LIMIT $start, $resultPerPage";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
