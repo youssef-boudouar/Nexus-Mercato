@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config/database.php'; 
+require_once '../config/database.php';
 
 
 class Team
@@ -72,7 +72,7 @@ class Team
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$this->name, $this->budget, $this->manager, $this->id]);
     }
-    
+
     public function findById($id)
     {
         $sql = "SELECT * FROM teams WHERE id = ?";
@@ -94,11 +94,18 @@ class Team
         $stmt->execute();
         return $stmt->fetch();
     }
-    public function gertAllPagination($start, $resultPerPage)
+    public function getAll()
     {
-        $sql = "SELECT * FROM teams ORDER BY budget DESC LIMIT $start, $resultPerPage";
+        $sql = "SELECT * FROM teams ORDER BY budget DESC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getAllPagination($start, $resultPerPage)
+    {
+        $sql = "SELECT * FROM teams ORDER BY budget DESC LIMIT ?, ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$start, $resultPerPage]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
