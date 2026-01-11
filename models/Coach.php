@@ -6,6 +6,18 @@ require_once '../config/database.php';
 class Coach extends Person
 {
 
+    private $image_url;
+
+    public function getImageUrl()
+    {
+        return $this->image_url;
+    }
+
+    public function setImageUrl($image_url)
+    {
+        $this->image_url = $image_url;
+    }
+
     public function getAll()
     {
         $sql = "SELECT * FROM coaches";
@@ -45,6 +57,6 @@ class Coach extends Person
 
     public function getAnnualCost()
     {
-        return 5000;
+        return 50000;
     }
 }
