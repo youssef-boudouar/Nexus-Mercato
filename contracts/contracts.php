@@ -7,6 +7,7 @@ include '../models/Contract.php';
 $contract = new Contract();
 $contracts = $contract->getAll();
 
+
 include '../includes/header.php';
 ?>
 
@@ -21,8 +22,8 @@ include '../includes/header.php';
             <table class="data-table">
                 <thead>
                     <tr class="tech-header">
-                        <th>ID</th>
-                        <th>PLAYER/COACH</th>
+                        <th>ROLE</th>
+                        <th>NAME</th>
                         <th>TEAM</th>
                         <th>SALARY</th>
                         <th>START DATE</th>
@@ -35,8 +36,18 @@ include '../includes/header.php';
                 <tbody>
                     <?php foreach($contracts as $c): ?>
                     <tr>
-                        <td class="font-bold text-gray-500">#<?= $c['id'] ?></td>
-                        <td class="font-bold text-white text-lg"><?= $c['player'] ?></td>
+                        <td>
+                            <?php if($c['player']): ?>
+                                <span class="px-3 py-1 rounded-lg bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-bold">
+                                    <i class="fas fa-running"></i> PLAYER
+                                </span>
+                            <?php else: ?>
+                                <span class="px-3 py-1 rounded-lg bg-orange-500/20 border border-orange-400/30 text-orange-300 text-xs font-bold">
+                                    <i class="fas fa-clipboard-list"></i> COACH
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                        <td class="font-bold text-white text-lg"><?= $c['player'] ?? $c['coach'] ?></td>
                         <td class="text-gray-400 tracking-wide"><?= $c['team'] ?></td>
                         <td class="font-bold text-[#14b8a6] text-lg">€<?= number_format($c['salary'] / 1000000, 2)?>M</td>
                         <td class="text-gray-500"><?= $c['start_date'] ?></td>
