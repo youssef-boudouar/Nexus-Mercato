@@ -1,6 +1,7 @@
 <?php
-
-
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +21,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Custom CSS -->
-    <!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
     <link rel="stylesheet" href="../assets/css/style.css">
 
 </head>
@@ -31,13 +31,32 @@
 
     <!-- Top Header -->
     <header class="top-header">
-        <!-- TODO: Show login button if user is visitor -->
-        <a href="../auth/login.php" class="btn-orange">
-            <i class="fas fa-sign-in-alt mr-2"></i>
-            LOGIN
-        </a>
-
-
+        <!-- Show login button if user is visitor -->
+        <?php if(!isset($_SESSION['user_role'])): ?>
+            <a href="../auth/login.php" class="btn-orange">
+                <i class="fas fa-sign-in-alt mr-2"></i>
+                LOGIN
+            </a>
+        <?php else: ?>
+            <!-- Show user role and logout button if logged in -->
+            <div class="flex items-center gap-4">
+                <div>
+                    <p class="text-xs text-gray-400 tracking-widest font-bold">LOGGED IN AS</p>
+                    <p class="text-sm font-black text-white uppercase tracking-wide tech-header">
+                        <?php if($_SESSION['user_role'] === 'admin'): ?>
+                            <i class="fas fa-shield-alt text-[#FF5722] mr-1"></i>
+                        <?php else: ?>
+                            <i class="fas fa-pen text-[#14b8a6] mr-1"></i>
+                        <?php endif; ?>
+                        <?= $_SESSION['user_role'] ?>
+                    </p>
+                </div>
+                <a href="../auth/logout.php" class="btn-outline">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    LOGOUT
+                </a>
+            </div>
+        <?php endif; ?>
     </header>
 
     <!-- Sidebar -->
@@ -57,7 +76,6 @@
 
         <!-- Navigation -->
         <nav class="py-10">
-            <!-- TODO: Add 'active' class to current page -->
             <a href="../index.php" class="nav-link">
                 <i class="fas fa-chart-line"></i>
                 <span>DASHBOARD</span>
@@ -78,8 +96,6 @@
                 <i class="fas fa-file-contract"></i>
                 <span>CONTRACTS</span>
             </a>
-
-
         </nav>
 
         <!-- Footer -->
