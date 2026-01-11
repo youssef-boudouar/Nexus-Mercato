@@ -103,9 +103,9 @@ class Team
     }
     public function getAllPagination($start, $resultPerPage)
     {
-        $sql = "SELECT * FROM teams ORDER BY budget DESC LIMIT ?, ?";
+        $sql = "SELECT * FROM teams ORDER BY budget DESC LIMIT $start, $resultPerPage";
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$start, $resultPerPage]);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
