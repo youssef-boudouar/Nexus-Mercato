@@ -84,6 +84,10 @@
                 <i class="fas fa-users"></i>
                 <span>PLAYERS</span>
             </a>
+            <a href="../coaches/coaches.php" class="nav-link">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>COACHES</span>
+            </a>
             <a href="../teams/teams.php" class="nav-link">
                 <i class="fas fa-shield-alt"></i>
                 <span>TEAMS</span>
