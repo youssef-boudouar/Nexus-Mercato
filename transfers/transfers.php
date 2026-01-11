@@ -54,26 +54,30 @@ include '../includes/header.php';
                                 <span class="badge badge-orange"><?= $transfer['transfer_status'] ?></span>
                             </td>
                             <td class="font-bold text-[#FF5722] text-lg"><?= $transfer['amount'] == 0 ? "Free Agent" : '€' . number_format($transfer['amount'] / 1000000, 2) . 'M' ?></td>
-                            <?php if (
-                                isset($_SESSION['user_role']) &&
-                                $_SESSION['user_role'] === 'admin' &&
-                                $transfer['transfer_status'] === 'in progress'
-                            ) : ?>
+                            <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
                                 <td class="flex gap-4">
-                                    <!-- EDIT -->
-                                    <a href="edit_transfer.php?id=<?= $transfer['id'] ?>"
-                                        class="text-blue-400 hover:text-blue-300 transition">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                    <?php if ($transfer['transfer_status'] === 'in progress'): ?>
+                                        <!-- EDIT -->
+                                        <a href="edit_transfer.php?id=<?= $transfer['id'] ?>"
+                                            class="text-blue-400 hover:text-blue-300 transition">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
 
-                                    <!-- DELETE -->
-                                    <a href="delete_transfer.php?id=<?= $transfer['id'] ?>"
-                                        onclick="return confirm('Are you sure you want to delete this transfer?');"
-                                        class="text-red-500 hover:text-red-400 transition">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                        <!-- DELETE -->
+                                        <a href="delete_transfer.php?id=<?= $transfer['id'] ?>"
+                                            onclick="return confirm('Are you sure you want to delete this transfer?');"
+                                            class="text-red-500 hover:text-red-400 transition">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <!-- LOCKED (for done/cancelled transfers) -->
+                                        <span class="text-gray-600 cursor-not-allowed" title="Transfer completed - locked">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                             <?php endif; ?>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
