@@ -90,12 +90,6 @@ include '../includes/header.php';
                 $photoUrl = $c['person_image'] ?? null;
                 $teamLogo = $c['team_logo'] ?? null;
 
-                $start    = strtotime($c['start_date']);
-                $end      = strtotime($c['end_date']);
-                $now      = time();
-                $pct      = ($end > $start) ? min(100, max(0, (int) round(($now - $start) / ($end - $start) * 100))) : 0;
-                $barColor = $pct > 75 ? '#FF5722' : '#14b8a6';
-
                 $words    = preg_split('/\s+/', trim($c['team']));
                 $initials = count($words) === 1
                     ? strtoupper(substr($c['team'], 0, 2))
@@ -119,17 +113,17 @@ include '../includes/header.php';
 
                 <!-- Photo + Name + Badge -->
                 <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-blue-500/50">
+                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 flex items-center justify-center">
                         <?php if (!empty($photoUrl)): ?>
                             <img src="<?= htmlspecialchars($photoUrl) ?>"
                                  alt="<?= htmlspecialchars($c['player']) ?>"
                                  class="w-full h-full object-cover object-top"
                                  onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
-                            <div class="initials-fallback w-full h-full bg-blue-900/30 items-center justify-center" style="display:none">
+                            <div class="initials-fallback w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-lg font-black" style="display:none">
                                 <i class="fas fa-user text-gray-500"></i>
                             </div>
                         <?php else: ?>
-                            <div class="w-full h-full bg-blue-900/30 flex items-center justify-center">
+                            <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-lg font-black">
                                 <i class="fas fa-user text-gray-500"></i>
                             </div>
                         <?php endif; ?>
@@ -150,14 +144,16 @@ include '../includes/header.php';
                 <div class="flex items-center gap-4 border-t border-white/5 pt-5">
                     <div class="flex items-center gap-3 flex-1 min-w-0">
                         <?php if (!empty($teamLogo)): ?>
-                            <img src="<?= htmlspecialchars($teamLogo) ?>" alt=""
-                                 class="w-9 h-9 rounded-full object-cover flex-shrink-0"
-                                 onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
-                            <div class="initials-fallback w-9 h-9 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0" style="display:none">
-                                <?= htmlspecialchars($initials) ?>
+                            <div class="flex items-center justify-center w-10 h-10 bg-transparent flex-shrink-0">
+                                <img src="<?= htmlspecialchars($teamLogo) ?>" alt=""
+                                     class="w-full h-full object-contain"
+                                     onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+                                <div class="initials-fallback w-10 h-10 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black" style="display:none">
+                                    <?= htmlspecialchars($initials) ?>
+                                </div>
                             </div>
                         <?php else: ?>
-                            <div class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0">
                                 <?= htmlspecialchars($initials) ?>
                             </div>
                         <?php endif; ?>
@@ -172,19 +168,6 @@ include '../includes/header.php';
                         </p>
                         <p class="text-[10px] text-gray-600 tracking-widest">MONTHLY SALARY</p>
                     </div>
-                </div>
-
-                <!-- Duration Bar -->
-                <div class="border-t border-white/5 pt-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <p class="text-[10px] text-gray-600 tracking-widest"><?= htmlspecialchars($c['start_date']) ?></p>
-                        <p class="text-[10px] text-gray-600 tracking-widest"><?= htmlspecialchars($c['end_date']) ?></p>
-                    </div>
-                    <div class="h-1.5 rounded-full bg-gray-800 overflow-hidden">
-                        <div class="h-full rounded-full"
-                             style="width: <?= $pct ?>%; background-color: <?= $barColor ?>;"></div>
-                    </div>
-                    <p class="text-[10px] text-gray-600 tracking-widest mt-1.5 text-right"><?= $pct ?>% elapsed</p>
                 </div>
 
             </div>
@@ -202,12 +185,6 @@ include '../includes/header.php';
             <?php foreach ($coachContracts as $c):
                 $photoUrl = $c['person_image'] ?? null;
                 $teamLogo = $c['team_logo'] ?? null;
-
-                $start    = strtotime($c['start_date']);
-                $end      = strtotime($c['end_date']);
-                $now      = time();
-                $pct      = ($end > $start) ? min(100, max(0, (int) round(($now - $start) / ($end - $start) * 100))) : 0;
-                $barColor = $pct > 75 ? '#FF5722' : '#14b8a6';
 
                 $words    = preg_split('/\s+/', trim($c['team']));
                 $initials = count($words) === 1
@@ -232,17 +209,17 @@ include '../includes/header.php';
 
                 <!-- Photo + Name + Badge -->
                 <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 border-2 border-[#FF5722]/50">
+                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 flex items-center justify-center">
                         <?php if (!empty($photoUrl)): ?>
                             <img src="<?= htmlspecialchars($photoUrl) ?>"
                                  alt="<?= htmlspecialchars($c['coach']) ?>"
                                  class="w-full h-full object-cover object-top"
                                  onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
-                            <div class="initials-fallback w-full h-full bg-[#FF5722]/10 items-center justify-center" style="display:none">
+                            <div class="initials-fallback w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-lg font-black" style="display:none">
                                 <i class="fas fa-clipboard-list text-gray-500"></i>
                             </div>
                         <?php else: ?>
-                            <div class="w-full h-full bg-[#FF5722]/10 flex items-center justify-center">
+                            <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-lg font-black">
                                 <i class="fas fa-clipboard-list text-gray-500"></i>
                             </div>
                         <?php endif; ?>
@@ -263,14 +240,16 @@ include '../includes/header.php';
                 <div class="flex items-center gap-4 border-t border-white/5 pt-5">
                     <div class="flex items-center gap-3 flex-1 min-w-0">
                         <?php if (!empty($teamLogo)): ?>
-                            <img src="<?= htmlspecialchars($teamLogo) ?>" alt=""
-                                 class="w-9 h-9 rounded-full object-cover flex-shrink-0"
-                                 onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
-                            <div class="initials-fallback w-9 h-9 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0" style="display:none">
-                                <?= htmlspecialchars($initials) ?>
+                            <div class="flex items-center justify-center w-10 h-10 bg-transparent flex-shrink-0">
+                                <img src="<?= htmlspecialchars($teamLogo) ?>" alt=""
+                                     class="w-full h-full object-contain"
+                                     onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+                                <div class="initials-fallback w-10 h-10 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black" style="display:none">
+                                    <?= htmlspecialchars($initials) ?>
+                                </div>
                             </div>
                         <?php else: ?>
-                            <div class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0">
                                 <?= htmlspecialchars($initials) ?>
                             </div>
                         <?php endif; ?>
@@ -283,19 +262,6 @@ include '../includes/header.php';
                         <span class="text-gray-500 text-sm font-bold tracking-widest">N/A</span>
                         <p class="text-[10px] text-gray-600 tracking-widest mt-1">SALARY DATA UNAVAILABLE</p>
                     </div>
-                </div>
-
-                <!-- Duration Bar -->
-                <div class="border-t border-white/5 pt-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <p class="text-[10px] text-gray-600 tracking-widest"><?= htmlspecialchars($c['start_date']) ?></p>
-                        <p class="text-[10px] text-gray-600 tracking-widest"><?= htmlspecialchars($c['end_date']) ?></p>
-                    </div>
-                    <div class="h-1.5 rounded-full bg-gray-800 overflow-hidden">
-                        <div class="h-full rounded-full"
-                             style="width: <?= $pct ?>%; background-color: <?= $barColor ?>;"></div>
-                    </div>
-                    <p class="text-[10px] text-gray-600 tracking-widest mt-1.5 text-right"><?= $pct ?>% elapsed</p>
                 </div>
 
             </div>
