@@ -20,7 +20,20 @@ usort($coachContracts, fn($a, $b) => strcmp($a['team'], $b['team']));
 $totalContracts = count($allContracts);
 $totalPlayers   = count($playerContracts);
 $totalCoaches   = count($coachContracts);
-$playerAnnual   = array_sum(array_column($playerContracts, 'salary')) * 12;
+
+// Market value lookup for estimated salary (10% of market value)
+$mvStmt = Database::getInstance()->getConnection()->prepare("SELECT name, market_value FROM players");
+$mvStmt->execute();
+$marketValues = [];
+foreach ($mvStmt->fetchAll(PDO::FETCH_ASSOC) as $r) {
+    $marketValues[$r['name']] = (float)$r['market_value'];
+}
+
+// Estimated total annual wages
+$estTotalWages = array_sum(array_map(
+    fn($c) => ($marketValues[$c['player']] ?? 0) * 0.10,
+    $playerContracts
+));
 
 // Filter
 $filter = $_GET['filter'] ?? 'all';
@@ -43,7 +56,7 @@ include '../includes/header.php';
             <div>
                 <h2 class="text-5xl font-black orange-glow tech-header leading-none">CONTRACT<br><span class="text-white">REGISTRY</span></h2>
                 <p class="text-gray-600 text-sm tracking-widest mt-3">
-                    PLAYER ANNUAL COST &mdash; <span class="text-[#14b8a6] font-black"><?= fmt($playerAnnual) ?>/yr</span>
+                    EST. TOTAL ANNUAL WAGES &mdash; <span class="text-[#14b8a6] font-black"><?= fmt($estTotalWages) ?>/yr</span>
                 </p>
             </div>
 
@@ -162,11 +175,13 @@ include '../includes/header.php';
                         </p>
                     </div>
                     <div class="w-px h-8 bg-white/10 flex-shrink-0"></div>
-                    <div class="text-right flex-shrink-0">
+                    <?php $mv = $marketValues[$c['player']] ?? 0; $estSalary = $mv * 0.10; ?>
+                    <div class="text-right">
                         <p class="text-2xl font-black text-[#14b8a6]">
-                            <?= fmt((float) $c['salary']) ?><span class="text-xs text-gray-600 font-normal">/yr</span>
+                            <?= $estSalary >= 1000000 ? '€' . number_format($estSalary/1000000, 2) . 'M' : '€' . number_format($estSalary/1000, 0) . 'K' ?>
                         </p>
-                        <p class="text-[10px] text-gray-600 tracking-widest">ANNUAL SALARY</p>
+                        <p class="text-[10px] text-gray-500 tracking-widest mt-1">EST. ANNUAL SALARY</p>
+                        <p class="text-[9px] text-gray-700 tracking-widest mt-0.5">~10% OF MARKET VALUE</p>
                     </div>
                 </div>
 
