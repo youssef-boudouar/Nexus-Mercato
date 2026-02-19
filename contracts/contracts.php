@@ -35,6 +35,9 @@ $estTotalWages = array_sum(array_map(
     $playerContracts
 ));
 
+// Expiring within 6 months
+$expiringSoon = count(array_filter($allContracts, fn($c) => ($e = strtotime($c['end_date'])) > time() && $e <= strtotime('+6 months')));
+
 // Filter
 $filter = $_GET['filter'] ?? 'all';
 
@@ -57,6 +60,9 @@ include '../includes/header.php';
                 <h2 class="text-5xl font-black orange-glow tech-header leading-none">CONTRACT<br><span class="text-white">REGISTRY</span></h2>
                 <p class="text-gray-600 text-sm tracking-widest mt-3">
                     EST. TOTAL ANNUAL WAGES &mdash; <span class="text-[#14b8a6] font-black"><?= fmt($estTotalWages) ?>/yr</span>
+                </p>
+                <p class="text-sm tracking-widest mt-1 <?= $expiringSoon > 0 ? 'text-amber-400' : 'text-gray-500' ?>">
+                    <?= $expiringSoon ?> CONTRACT<?= $expiringSoon !== 1 ? 'S' : '' ?> EXPIRING WITHIN 6 MONTHS
                 </p>
             </div>
 
@@ -185,6 +191,54 @@ include '../includes/header.php';
                     </div>
                 </div>
 
+                <!-- Contract Status -->
+                <?php
+                $start      = strtotime($c['start_date']);
+                $end        = strtotime($c['end_date']);
+                $today      = time();
+                $totalDays  = max(1, $end - $start);
+                $elapsed    = max(0, $today - $start);
+                $remaining  = max(0, $end - $today);
+                $pct        = min(100, round($elapsed / $totalDays * 100));
+                $monthsLeft = round($remaining / (30 * 24 * 3600));
+                $yearsLeft  = round($remaining / (365 * 24 * 3600), 1);
+                if ($remaining <= 0) {
+                    $statusLabel = 'EXPIRED';
+                    $statusColor = 'text-red-400';
+                    $barColor    = 'bg-red-500';
+                } elseif ($monthsLeft <= 6) {
+                    $statusLabel = 'EXPIRING SOON';
+                    $statusColor = 'text-amber-400';
+                    $barColor    = 'bg-amber-400';
+                } else {
+                    $statusLabel = 'ACTIVE';
+                    $statusColor = 'text-green-400';
+                    $barColor    = 'bg-[#14b8a6]';
+                }
+                ?>
+                <div class="mt-4 pt-4 border-t border-white/5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full <?= str_replace('text-', 'bg-', $statusColor) ?>"></span>
+                            <span class="text-[10px] font-black tracking-widest <?= $statusColor ?>"><?= $statusLabel ?></span>
+                        </div>
+                        <span class="text-xs font-black text-white">
+                            <?php if ($remaining > 0): ?>
+                                <?= $yearsLeft >= 1 ? $yearsLeft . ' YRS LEFT' : $monthsLeft . ' MO LEFT' ?>
+                            <?php else: ?>
+                                ENDED
+                            <?php endif; ?>
+                        </span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="h-1 rounded-full <?= $barColor ?> transition-all" style="width:<?= $pct ?>%"></div>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-[9px] text-gray-600"><?= date('M Y', $start) ?></span>
+                        <span class="text-[9px] text-gray-600"><?= date('M Y', $end) ?></span>
+                    </div>
+                </div>
+
             </div>
             <?php endforeach; ?>
         </div>
@@ -276,6 +330,54 @@ include '../includes/header.php';
                     <div class="text-right flex-shrink-0">
                         <span class="text-gray-500 text-sm font-bold tracking-widest">N/A</span>
                         <p class="text-[10px] text-gray-600 tracking-widest mt-1">SALARY DATA UNAVAILABLE</p>
+                    </div>
+                </div>
+
+                <!-- Contract Status -->
+                <?php
+                $start      = strtotime($c['start_date']);
+                $end        = strtotime($c['end_date']);
+                $today      = time();
+                $totalDays  = max(1, $end - $start);
+                $elapsed    = max(0, $today - $start);
+                $remaining  = max(0, $end - $today);
+                $pct        = min(100, round($elapsed / $totalDays * 100));
+                $monthsLeft = round($remaining / (30 * 24 * 3600));
+                $yearsLeft  = round($remaining / (365 * 24 * 3600), 1);
+                if ($remaining <= 0) {
+                    $statusLabel = 'EXPIRED';
+                    $statusColor = 'text-red-400';
+                    $barColor    = 'bg-red-500';
+                } elseif ($monthsLeft <= 6) {
+                    $statusLabel = 'EXPIRING SOON';
+                    $statusColor = 'text-amber-400';
+                    $barColor    = 'bg-amber-400';
+                } else {
+                    $statusLabel = 'ACTIVE';
+                    $statusColor = 'text-green-400';
+                    $barColor    = 'bg-[#14b8a6]';
+                }
+                ?>
+                <div class="mt-4 pt-4 border-t border-white/5 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full <?= str_replace('text-', 'bg-', $statusColor) ?>"></span>
+                            <span class="text-[10px] font-black tracking-widest <?= $statusColor ?>"><?= $statusLabel ?></span>
+                        </div>
+                        <span class="text-xs font-black text-white">
+                            <?php if ($remaining > 0): ?>
+                                <?= $yearsLeft >= 1 ? $yearsLeft . ' YRS LEFT' : $monthsLeft . ' MO LEFT' ?>
+                            <?php else: ?>
+                                ENDED
+                            <?php endif; ?>
+                        </span>
+                    </div>
+                    <div class="w-full bg-gray-800 rounded-full h-1">
+                        <div class="h-1 rounded-full <?= $barColor ?> transition-all" style="width:<?= $pct ?>%"></div>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-[9px] text-gray-600"><?= date('M Y', $start) ?></span>
+                        <span class="text-[9px] text-gray-600"><?= date('M Y', $end) ?></span>
                     </div>
                 </div>
 
