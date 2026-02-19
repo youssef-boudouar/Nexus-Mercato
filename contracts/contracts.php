@@ -164,9 +164,9 @@ include '../includes/header.php';
                     <div class="w-px h-8 bg-white/10 flex-shrink-0"></div>
                     <div class="text-right flex-shrink-0">
                         <p class="text-2xl font-black text-[#14b8a6]">
-                            <?= fmt((float) $c['salary']) ?><span class="text-xs text-gray-600 font-normal">/mo</span>
+                            <?= fmt((float) $c['salary']) ?><span class="text-xs text-gray-600 font-normal">/yr</span>
                         </p>
-                        <p class="text-[10px] text-gray-600 tracking-widest">MONTHLY SALARY</p>
+                        <p class="text-[10px] text-gray-600 tracking-widest">ANNUAL SALARY</p>
                     </div>
                 </div>
 
