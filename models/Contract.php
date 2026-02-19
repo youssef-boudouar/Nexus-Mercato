@@ -1,5 +1,8 @@
 <?php
 
+require_once '../config/database.php'; 
+
+
 class Contract
 {
     private $id;
@@ -11,7 +14,7 @@ class Contract
     private $end_date;
     private $db;
 
-    
+
     public function __construct()
     {
         $this->db = Database::getInstance()->getConnection();
@@ -91,4 +94,72 @@ class Contract
         $this->end_date = $end_date;
     }
 
+    public function getAll()
+    {
+        $sql = "SELECT contracts.id, players.name as player, teams.name as team, coaches.name as coach,
+                       contracts.salary, contracts.start_date, contracts.end_date,
+                       COALESCE(players.image_url, coaches.image_url) AS person_image,
+                       teams.logo_url AS team_logo
+            FROM contracts
+            LEFT JOIN players ON players.id = contracts.player_id
+            LEFT JOIN coaches ON coaches.id = contracts.coach_id
+            JOIN teams ON teams.id = contracts.team_id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function create()
+    {
+        $sql = "INSERT INTO contracts(player_id, coach_id, team_id, salary, start_date, end_date)
+        VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->player_id ,$this->coach_id ,$this->team_id,$this->salary ,$this->start_date ,$this->end_date]);
+    }
+
+    public function update()
+    {
+        $sql = "UPDATE contracts 
+        SET player_id = ?, coach_id = ?, team_id = ?, salary = ?, start_date = ?, end_date = ?
+        WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->player_id ,$this->coach_id ,$this->team_id,$this->salary ,$this->start_date ,$this->end_date, $this->id]);
+    }
+
+    public function delete()
+    {
+        $sql = "DELETE FROM contracts WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$this->id]);
+    }
+
+    public function findById($id)
+    {
+        $sql = "SELECT * FROM contracts WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getByPlayer($player_id)
+    {
+        $sql = "SELECT * FROM contracts WHERE player_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$player_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getByCoach($coach_id)
+    {
+        $sql = "SELECT * FROM contracts WHERE coach_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$coach_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getByTeam($team_id)
+    {
+        $sql = "SELECT * FROM contracts WHERE team_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$team_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
