@@ -25,17 +25,17 @@
 
 </head>
 
-<body class="bg-stadium">
-    <!-- Fixed gradient overlay -->
-    <div class="overlay-gradient"></div>
-
+<body class="bg-black min-h-screen">
+    
     <!-- Top Header -->
     <header class="top-header">
         <!-- Show login button if user is visitor -->
         <?php if(!isset($_SESSION['user_role'])): ?>
-            <a href="../auth/login.php" class="btn-orange">
-                <i class="fas fa-sign-in-alt mr-2"></i>
-                LOGIN
+            <a href="../auth/login.php" class="relative group overflow-hidden pl-6 pr-8 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all duration-300 border border-white/10 hover:-translate-y-0.5">
+                <span class="relative z-10 flex items-center gap-2">
+                    <i class="fas fa-sign-in-alt"></i> LOGIN ACCESS
+                </span>
+                <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </a>
         <?php else: ?>
             <!-- Show user role and logout button if logged in -->
@@ -75,30 +75,30 @@
        </div>
 
         <!-- Navigation -->
-        <nav class="py-10">
-            <a href="../index.php" class="nav-link">
-                <i class="fas fa-chart-line"></i>
-                <span>DASHBOARD</span>
+        <nav class="py-10 space-y-1">
+            <a href="../index.php" class="flex items-center gap-4 px-8 py-4 text-slate-400 hover:text-white transition-colors duration-300 group">
+                <i class="fas fa-chart-line w-6 text-center group-hover:text-blue-400 transition-colors"></i>
+                <span class="font-bold tracking-wider text-sm">DASHBOARD</span>
             </a>
-            <a href="../players/players.php" class="nav-link">
-                <i class="fas fa-users"></i>
-                <span>PLAYERS</span>
+            <a href="../players/players.php" class="flex items-center gap-4 px-8 py-4 text-slate-400 hover:text-white transition-colors duration-300 group">
+                <i class="fas fa-users w-6 text-center group-hover:text-blue-400 transition-colors"></i>
+                <span class="font-bold tracking-wider text-sm">PLAYERS</span>
             </a>
-            <a href="../coaches/coaches.php" class="nav-link">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <span>COACHES</span>
+            <a href="../coaches/coaches.php" class="flex items-center gap-4 px-8 py-4 text-slate-400 hover:text-white transition-colors duration-300 group">
+                <i class="fas fa-chalkboard-teacher w-6 text-center group-hover:text-blue-400 transition-colors"></i>
+                <span class="font-bold tracking-wider text-sm">COACHES</span>
             </a>
-            <a href="../teams/teams.php" class="nav-link">
-                <i class="fas fa-shield-alt"></i>
-                <span>TEAMS</span>
+            <a href="../teams/teams.php" class="flex items-center gap-4 px-8 py-4 text-slate-400 hover:text-white transition-colors duration-300 group">
+                <i class="fas fa-shield-alt w-6 text-center group-hover:text-blue-400 transition-colors"></i>
+                <span class="font-bold tracking-wider text-sm">TEAMS</span>
             </a>
-            <a href="../transfers/transfers.php" class="nav-link">
-                <i class="fas fa-exchange-alt"></i>
-                <span>TRANSFERS</span>
+            <a href="../transfers/transfers.php" class="flex items-center gap-4 px-8 py-4 text-slate-400 hover:text-white transition-colors duration-300 group">
+                <i class="fas fa-exchange-alt w-6 text-center group-hover:text-blue-400 transition-colors"></i>
+                <span class="font-bold tracking-wider text-sm">TRANSFERS</span>
             </a>
-            <a href="../contracts/contracts.php" class="nav-link">
-                <i class="fas fa-file-contract"></i>
-                <span>CONTRACTS</span>
+            <a href="../contracts/contracts.php" class="flex items-center gap-4 px-8 py-4 text-slate-400 hover:text-white transition-colors duration-300 group">
+                <i class="fas fa-file-contract w-6 text-center group-hover:text-blue-400 transition-colors"></i>
+                <span class="font-bold tracking-wider text-sm">CONTRACTS</span>
             </a>
         </nav>
 

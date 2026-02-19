@@ -33,47 +33,67 @@ include '../includes/header.php';
         </div>
 
         <div class="overflow-x-auto">
-            <table class="data-table">
+            <table class="w-full border-collapse">
                 <thead>
-                    <tr class="tech-header">
-                        <th>LOGO</th>
-                        <th>TEAM NAME</th>
-                        <th>MANAGER</th>
-                        <th>BUDGET</th>
+                    <tr class="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-white/5 bg-slate-900/50">
+                        <th class="py-5 px-6 text-left">Club Identity</th>
+                        <th class="py-5 px-6 text-left">Manager</th>
+                        <th class="py-5 px-6 text-right">Financial Cap</th>
                         <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                            <th>ACTIONS</th>
+                            <th class="py-5 px-6 text-right">Actions</th>
                         <?php endif; ?>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-white/5">
                     <?php foreach ($teams as $team): ?>
-                        <tr>
-                            <td><img src="<?= $team['logo_url'] ?>" alt="" class="team-img"></td>
-                            <td class="font-bold text-white text-lg"><?= $team['name'] ?></td>
-                            <td class="text-gray-400 tracking-wide"><?= $team['manager'] ?></td>
-                            <?php if ($team['budget'] >= 1000000 && $team['budget'] < 1000000000): ?>
-                                <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000000, 2) ?>M</td>
-                            <?php endif ?>
-                            <?php if ($team['budget'] < 1000000) : ?>
-                                <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000, 2)  ?>K</td>
-                            <?php endif ?>
-                            <?php if ($team['budget'] > 1000000000) : ?>
-                                <td class="font-bold text-[#FF5722] text-lg">€<?= number_format($team['budget'] / 1000000000, 2)  ?>bn</td>
-                            <?php endif ?>
+                        <tr class="group hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="py-5 px-6">
+                                <div class="flex items-center gap-6">
+                                    <!-- Apple-style Logo Container -->
+                                    <div class="h-20 w-20 flex-shrink-0 bg-white/5 rounded-xl p-4 flex items-center justify-center border border-white/10 shadow-lg">
+                                        <img src="<?= htmlspecialchars($team['logo_url'] ?? '') ?>" alt="<?= htmlspecialchars($team['name']) ?>" class="max-h-full max-w-full object-contain filter drop-shadow hover:scale-110 transition-transform duration-300">
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="text-xl font-bold text-white tracking-tight mb-1"><?= $team['name'] ?></div>
+                                        <div class="flex items-center gap-2 text-slate-500 text-sm font-mono">
+                                            <i class="fas fa-hashtag text-slate-700 text-[10px]"></i> EST. 2024
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center border border-white/5 text-slate-400">
+                                        <i class="fas fa-user-tie text-xs"></i>
+                                    </div>
+                                    <span class="text-slate-300 font-medium"><?= $team['manager'] ?></span>
+                                </div>
+                            </td>
+                            <td class="py-5 px-6 text-right">
+                                <?php if ($team['budget'] >= 1000000000): ?>
+                                    <span class="font-mono font-bold text-purple-400 text-lg">€<?= number_format($team['budget'] / 1000000000, 2) ?>bn</span>
+                                    <div class="text-[10px] text-purple-400/50 uppercase tracking-widest font-bold mt-1">Mega Cap</div>
+                                <?php elseif ($team['budget'] >= 1000000): ?>
+                                    <span class="font-mono font-bold text-blue-400 text-lg">€<?= number_format($team['budget'] / 1000000, 2) ?>M</span>
+                                    <div class="text-[10px] text-blue-400/50 uppercase tracking-widest font-bold mt-1">High Cap</div>
+                                <?php else: ?>
+                                    <span class="font-mono font-bold text-slate-400 text-lg">€<?= number_format($team['budget'] / 1000, 2) ?>K</span>
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-widest font-bold mt-1">Low Cap</div>
+                                <?php endif; ?>
+                            </td>
                             <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                                <td class="flex gap-4">
-                                    <!-- EDIT -->
-                                    <a href="edit_team.php?id= <?= $team['id'] ?>"
-                                        class="text-blue-400 hover:text-blue-300 transition">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-
-                                    <!-- DELETE -->
-                                    <a href="delete_team.php?id=<?= $team['id'] ?>"
-                                        onclick="return confirm('Are you sure you want to delete this team?');"
-                                        class="text-red-500 hover:text-red-400 transition">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                <td class="py-5 px-6 text-right">
+                                    <div class="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <a href="edit_team.php?id=<?= $team['id'] ?>" class="p-2 text-slate-400 hover:text-white transition-colors border border-transparent hover:border-white/10 rounded-lg">
+                                            <i class="fas fa-pen-to-square"></i>
+                                        </a>
+                                        <a href="delete_team.php?id=<?= $team['id'] ?>" 
+                                            onclick="return confirm('Are you sure you want to delete this team?');"
+                                            class="p-2 text-red-500 hover:text-red-400 transition-colors border border-transparent hover:border-red-500/20 rounded-lg">
+                                            <i class="fas fa-trash-can"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             <?php endif; ?>
                         </tr>
