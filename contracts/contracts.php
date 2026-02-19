@@ -22,6 +22,9 @@ $totalPlayers   = count($playerContracts);
 $totalCoaches   = count($coachContracts);
 $playerAnnual   = array_sum(array_column($playerContracts, 'salary')) * 12;
 
+// Filter
+$filter = $_GET['filter'] ?? 'all';
+
 function fmt(float $n): string {
     if ($n >= 1_000_000) return '€' . number_format($n / 1_000_000, 2) . 'M';
     if ($n >= 1_000)     return '€' . number_format($n / 1_000, 1) . 'K';
@@ -70,6 +73,15 @@ include '../includes/header.php';
             </div>
         </div>
 
+        <!-- Filter Tabs -->
+        <div class="flex gap-2 mb-8">
+            <a href="?filter=all"     class="px-4 py-2 rounded-lg text-xs font-black tracking-widest tech-header <?= (!isset($_GET['filter']) || $_GET['filter']==='all') ? 'bg-[#FF5722] text-white' : 'glass-dark text-gray-400' ?>">ALL</a>
+            <a href="?filter=players" class="px-4 py-2 rounded-lg text-xs font-black tracking-widest tech-header <?= (isset($_GET['filter']) && $_GET['filter']==='players') ? 'bg-[#FF5722] text-white' : 'glass-dark text-gray-400' ?>">PLAYERS</a>
+            <a href="?filter=coaches" class="px-4 py-2 rounded-lg text-xs font-black tracking-widest tech-header <?= (isset($_GET['filter']) && $_GET['filter']==='coaches') ? 'bg-[#14b8a6] text-white' : 'glass-dark text-gray-400' ?>">COACHING STAFF</a>
+        </div>
+
+        <?php if ($filter === 'all' || $filter === 'players'): ?>
+
         <!-- ── PLAYER CONTRACTS ── -->
         <h3 class="tech-header orange-glow text-3xl font-black mb-6">PLAYER CONTRACTS</h3>
 
@@ -112,8 +124,8 @@ include '../includes/header.php';
                             <img src="<?= htmlspecialchars($photoUrl) ?>"
                                  alt="<?= htmlspecialchars($c['player']) ?>"
                                  class="w-full h-full object-cover object-top"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                            <div class="w-full h-full bg-blue-900/30 items-center justify-center" style="display:none">
+                                 onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+                            <div class="initials-fallback w-full h-full bg-blue-900/30 items-center justify-center" style="display:none">
                                 <i class="fas fa-user text-gray-500"></i>
                             </div>
                         <?php else: ?>
@@ -140,8 +152,8 @@ include '../includes/header.php';
                         <?php if (!empty($teamLogo)): ?>
                             <img src="<?= htmlspecialchars($teamLogo) ?>" alt=""
                                  class="w-9 h-9 rounded-full object-cover flex-shrink-0"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                            <div class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0" style="display:none">
+                                 onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+                            <div class="initials-fallback w-9 h-9 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0" style="display:none">
                                 <?= htmlspecialchars($initials) ?>
                             </div>
                         <?php else: ?>
@@ -178,6 +190,10 @@ include '../includes/header.php';
             </div>
             <?php endforeach; ?>
         </div>
+
+        <?php endif; ?>
+
+        <?php if ($filter === 'all' || $filter === 'coaches'): ?>
 
         <!-- ── COACHING STAFF ── -->
         <h3 class="tech-header teal-glow text-3xl font-black mb-6 mt-12">COACHING STAFF</h3>
@@ -221,8 +237,8 @@ include '../includes/header.php';
                             <img src="<?= htmlspecialchars($photoUrl) ?>"
                                  alt="<?= htmlspecialchars($c['coach']) ?>"
                                  class="w-full h-full object-cover object-top"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                            <div class="w-full h-full bg-[#FF5722]/10 items-center justify-center" style="display:none">
+                                 onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+                            <div class="initials-fallback w-full h-full bg-[#FF5722]/10 items-center justify-center" style="display:none">
                                 <i class="fas fa-clipboard-list text-gray-500"></i>
                             </div>
                         <?php else: ?>
@@ -249,8 +265,8 @@ include '../includes/header.php';
                         <?php if (!empty($teamLogo)): ?>
                             <img src="<?= htmlspecialchars($teamLogo) ?>" alt=""
                                  class="w-9 h-9 rounded-full object-cover flex-shrink-0"
-                                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-                            <div class="w-9 h-9 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0" style="display:none">
+                                 onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
+                            <div class="initials-fallback w-9 h-9 rounded-full bg-gray-800 border border-gray-700 items-center justify-center text-gray-400 text-[10px] font-black flex-shrink-0" style="display:none">
                                 <?= htmlspecialchars($initials) ?>
                             </div>
                         <?php else: ?>
@@ -264,8 +280,8 @@ include '../includes/header.php';
                     </div>
                     <div class="w-px h-8 bg-white/10 flex-shrink-0"></div>
                     <div class="text-right flex-shrink-0">
-                        <p class="text-lg font-black text-[#FF5722] tracking-widest">CONFIDENTIAL</p>
-                        <p class="text-[10px] text-gray-600 tracking-widest">MONTHLY SALARY *</p>
+                        <span class="text-gray-500 text-sm font-bold tracking-widest">N/A</span>
+                        <p class="text-[10px] text-gray-600 tracking-widest mt-1">SALARY DATA UNAVAILABLE</p>
                     </div>
                 </div>
 
@@ -286,8 +302,7 @@ include '../includes/header.php';
             <?php endforeach; ?>
         </div>
 
-        <!-- Footnote -->
-        <p class="text-[10px] text-gray-700 tracking-widest mt-6">* Salary data unavailable for coaching staff</p>
+        <?php endif; ?>
 
     </section>
 
