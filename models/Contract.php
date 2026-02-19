@@ -96,8 +96,11 @@ class Contract
 
     public function getAll()
     {
-        $sql = "SELECT contracts.id, players.name as player, teams.name as team, coaches.name as coach, contracts.salary, contracts.start_date, contracts.end_date 
-            FROM contracts 
+        $sql = "SELECT contracts.id, players.name as player, teams.name as team, coaches.name as coach,
+                       contracts.salary, contracts.start_date, contracts.end_date,
+                       COALESCE(players.image_url, coaches.image_url) AS person_image,
+                       teams.logo_url AS team_logo
+            FROM contracts
             LEFT JOIN players ON players.id = contracts.player_id
             LEFT JOIN coaches ON coaches.id = contracts.coach_id
             JOIN teams ON teams.id = contracts.team_id";
