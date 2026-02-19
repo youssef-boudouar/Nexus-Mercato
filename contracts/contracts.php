@@ -113,11 +113,11 @@ include '../includes/header.php';
 
                 <!-- Photo + Name + Badge -->
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 bg-gray-900 flex items-center justify-center">
                         <?php if (!empty($photoUrl)): ?>
                             <img src="<?= htmlspecialchars($photoUrl) ?>"
                                  alt="<?= htmlspecialchars($c['player']) ?>"
-                                 class="w-full h-full object-cover object-top"
+                                 class="w-16 h-16 object-cover object-top"
                                  onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
                             <div class="initials-fallback w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-lg font-black" style="display:none">
                                 <i class="fas fa-user text-gray-500"></i>
@@ -209,11 +209,11 @@ include '../includes/header.php';
 
                 <!-- Photo + Name + Badge -->
                 <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full overflow-hidden shrink-0 bg-gray-900 flex items-center justify-center">
                         <?php if (!empty($photoUrl)): ?>
                             <img src="<?= htmlspecialchars($photoUrl) ?>"
                                  alt="<?= htmlspecialchars($c['coach']) ?>"
-                                 class="w-full h-full object-cover object-top"
+                                 class="w-16 h-16 object-cover object-top"
                                  onerror="this.style.display='none';this.parentElement.querySelector('.initials-fallback').style.display='flex'">
                             <div class="initials-fallback w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center text-gray-400 text-lg font-black" style="display:none">
                                 <i class="fas fa-clipboard-list text-gray-500"></i>
