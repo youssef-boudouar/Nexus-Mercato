@@ -81,11 +81,16 @@ class Transfer
 
     public function getAll()
     {
-        $sql = "SELECT players.name AS player, teamA.name AS departure_team, teamB.name AS arrival_team, transfer_status, amount, transfers.id
-                FROM transfers 
+        $sql = "SELECT players.name AS player, players.image_url AS player_image,
+                       players.position, players.nationality,
+                       teamA.name AS departure_team, teamA.logo_url AS departure_logo,
+                       teamB.name AS arrival_team, teamB.logo_url AS arrival_logo,
+                       transfer_status, amount, transfers.id
+                FROM transfers
                 JOIN players ON transfers.player_id = players.id
                 JOIN teams AS teamA ON transfers.departure_team_id = teamA.id
-                JOIN teams AS teamB ON transfers.arrival_team_id = teamB.id";
+                JOIN teams AS teamB ON transfers.arrival_team_id = teamB.id
+                ORDER BY transfers.id ASC";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
