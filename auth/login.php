@@ -63,15 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             }
             ?>
 
-            <form class="space-y-6" method="POST" action="">
+            <form class="space-y-6" method="POST" action="" autocomplete="off">
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">EMAIL ADDRESS</label>
-                    <input type="email" name="email" class="form-input" placeholder="admin@nexusmercato.com" required>
+                    <input type="email" name="email" class="form-input" placeholder="admin@nexusmercato.com" required autocomplete="npm-disable-autofill">
                 </div>
 
                 <div>
                     <label class="block text-gray-400 text-xs font-bold tech-header mb-3 tracking-widest">PASSWORD</label>
-                    <input type="password" name="password" class="form-input" placeholder="••••••••••" required>
+                    <input type="password" name="password" class="form-input" placeholder="••••••••••" required autocomplete="new-password">
                 </div>
 
                 <button type="submit" name="login" class="btn-orange w-full">
