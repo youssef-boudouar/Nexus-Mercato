@@ -28,14 +28,19 @@ class Database {
      */
     private function __construct()
     {
-        // Ideally, these should come from Environment Variables (.env)
-        $this->host = 'localhost';
-        $this->db_name = 'nexus';
-        $this->username = 'root';
-        $this->password = 'zippo';
+        $host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?? 'localhost';
+        $port = $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?? '3306';
+        $name = $_ENV['DB_NAME'] ?? getenv('DB_NAME') ?? 'nexus';
+        $user = $_ENV['DB_USER'] ?? getenv('DB_USER') ?? 'root';
+        $pass = $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?? '';
+
+        $this->host = $host;
+        $this->db_name = $name;
+        $this->username = $user;
+        $this->password = $pass;
 
         try {
-            $dsn = "mysql:host={$this->host};dbname={$this->db_name};charset=utf8mb4";
+            $dsn = "mysql:host={$this->host};port={$port};dbname={$this->db_name};charset=utf8mb4";
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
